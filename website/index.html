@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Crypto Infos</title>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/x-icon" href="res/img/logo.png" />
+    
+    <link rel="stylesheet" type="text/css" href="res/styles/common.css">
+
+    <!-- Vue.js -->
+    <script src="https://cdn.jsdelivr.net/npm/vue"></script>
+
+    <!-- axios -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.15.2/axios.js"></script>
+  </head>
+
+<body>
+    <div id="app">
+      <header-perso></header-perso>
+    	<div id="main">
+	    	<div id="option">
+	    		<div id="separate-option">
+					  <div>
+	    				<div class="option-title">Currency</div>
+			    		<div class="sorting-option">
+			    		  <sortingoptioncurrency v-for="item in currency" v-bind:currency="item"></sortingoptioncurrency>
+				      </div>
+			      </div>
+            <!-- / Currency option -->
+			      <div>
+              <div class="option-title">Time Period</div>
+              <div class="sorting-option">
+                <sortingoptiontimeperiod v-for="item in timeperiod" v-bind:timeperiod="item"></sortingoptiontimeperiod>
+              </div>
+				    </div>
+            <!-- / Time period option -->
+				    <div>
+              <div class="option-title">Sort by</div>
+              <div class="sorting-option">
+                <sortingoptionsortitem v-for="item in sortoption" v-bind:sortoption="item"></sortingoptionsortitem>
+				    	</div>
+			    	</div>
+            <!-- / Sort option -->
+			    	<div>
+				    	<div class="option-title">Order</div>
+              <div class="sorting-option">
+                <sortingoptionorder v-for="item in order" v-bind:order="item"></sortingoptionorder>
+              </div>
+            </div>
+            <!-- / Order option -->
+			    </div>
+          <!-- / separate-option -->
+		    </div>
+        <!-- / option -->
+		    <div id="container-crypto">
+		      <crypto v-for="item in cryptocurrencies" v-bind:cryptocurrencies="item" v-bind:key="item.id"></crypto>
+		    </div>
+        <!-- / container-crypto -->
+	    </div>
+      <!-- / main -->
+
+      <footer-perso></footer-perso>
+    </div>
+    <!-- / app -->
+
+    <script type="text/javascript" src="scripts/appIndex.js"></script>
+    <script type="text/javascript" src="scripts/formatNumber.js"></script>
+    <script type="text/javascript" src="scripts/changeBackground.js"></script>
+    <script type="text/javascript" src="scripts/components.js"></script>
+  </body>
+  <!-- / body -->
+</html>
+<!-- / html -->

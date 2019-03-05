@@ -1,5 +1,7 @@
 # Crypto Infos
 
+[Go to the website](http://cryptoinfos.tk)
+
 ### Website created to discover Vuejs framework.
 
 Display information about cryptocurrencies.

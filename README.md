@@ -4,6 +4,7 @@
 
 ### Website created to discover Vuejs framework.
 
+Only .js files.
 Display information about cryptocurrencies.
 
 ### Index page

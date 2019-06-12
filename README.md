@@ -1,6 +1,6 @@
 # Crypto Infos
 
-[Go to the website](http://cryptoinfos.tk)
+[Go to the website](https://cryptoinfo.bghinc.fr/)
 
 ### Website created to discover Vuejs framework.
 

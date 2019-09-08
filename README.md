@@ -1,7 +1,10 @@
 # Crypto Infos
 
+[Go to the website](https://cryptoinfo.bghinc.fr/)
+
 ### Website created to discover Vuejs framework.
 
+Only .js files.
 Display information about cryptocurrencies.
 
 ### Index page

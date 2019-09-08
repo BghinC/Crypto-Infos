@@ -1,0 +1,265 @@
+<template>
+  <div>
+    <Header/>
+    <div id="main">
+      <Menu
+        :currency="currency"
+        :timeperiod="timeperiod"
+        v-on:update="getFromApiOptions($event)"/>
+      <div id="main-container">
+        <crypto-details
+            id="crypto-detail"
+            v-if="history && cryptocurrency.allTimeHigh"
+            :history="history"
+            :cryptocurrency="cryptocurrency"
+            :base="base">
+          </crypto-details>
+      </div>
+      <!-- / main-container -->
+    </div>
+    <!-- / main -->
+    <div id="other">
+      <h1 id="other-title">Explore others cryptocurrencies</h1>
+        <div id="container-crypto">
+          <crypto v-for="item in cryptocurrencies" v-bind:cryptocurrencies="item" v-bind:key="item.id" :base="base"></crypto>
+        </div>
+    </div>
+    <!-- / Other -->
+    <Footer/>
+  </div>
+</template>
+
+<script>
+import Header from '@/components/Header.vue';
+import Menu from '@/components/Menu.vue';
+import Crypto from '@/components/Crypto.vue';
+import CryptoDetails from '@/components/CryptoDetails.vue';
+import Footer from '@/components/Footer.vue';
+
+export default {
+  name: 'Details',
+  components: {
+    Header, Menu, CryptoDetails, Crypto, Footer,
+  },
+  data() {
+    return {
+      cryptocurrencies: [],
+      cryptocurrency: {},
+
+      /* Default options */
+      sortcurrency: 'USD',
+      sorttimeperiod: '24h',
+
+      url: `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`,
+      url_history: `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/24h?base=USD`,
+
+      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
+      timeperiod: ['24h', '7d', '30d', '1y', '5y'],
+
+      history: [],
+      base: {},
+    };
+  },
+  watch: {
+    '$route.params.id': {
+      handler() {
+        this.url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`;
+        this.url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/24h?base=USD`;
+        this.getFromApi();
+        this.getRandomCoins();
+      },
+    },
+  },
+  created() {
+    /* When created we get datas about the main cryptocurrency and we get 3 rando cryptocurrencies to display */
+    this.getFromApi();
+    this.getRandomCoins();
+  },
+  methods: {
+    async getFromApi() {
+      /* Get the cryptocurrency history */
+      await this.$http
+        .get(this.url_history)
+        .then((response) => {
+          this.history = response.data.data.history;
+        }).catch((error) => {
+        /* Supress useless div */
+          let element = document.getElementById('option');
+          element.parentNode.removeChild(element);
+          element = document.getElementById('main-container');
+          element.parentNode.removeChild(element);
+          element = document.getElementById('other');
+          element.parentNode.removeChild(element);
+
+          /* Display an error div */
+          const p = document.getElementById('main');
+          const div = document.createElement('div');
+          div.setAttribute('id', 'invalid-id');
+          const h = document.createElement('h1');
+          h.setAttribute('id', 'invalid');
+          h.innerHTML = 'Invalid id';
+          p.appendChild(div);
+          div.appendChild(h);
+        });
+      /* Get current data about the cryptocurrency */
+      this.$http
+        .get(this.url)
+        .then((response) => {
+          this.cryptocurrency = response.data.data.coin;
+          this.base = response.data.data.base;
+        }).catch((error) => {
+          console.log(error);
+        });
+    },
+    /*
+      getRandomCoins :: () → ()
+      Using to get an Array containing 3 random cryptocurrencies
+    */
+    async getRandomCoins() {
+      const self = this;
+      const url_random = 'https://api.coinranking.com/v1/public/coins';
+      let currency = [];
+      await this.$http
+        .get(url_random)
+        .then((response) => {
+          currency = response.data.data.coins;
+          for (let i = 0; i < 3; i += 1) {
+            const index = Math.floor(Math.random() * currency.length);
+            if (index > -1) {
+              const item = currency[index];
+              self.cryptocurrencies[i] = item;
+              currency.splice(index, 1);
+            }
+          }
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    /*
+      getFromApiOptions :: (String, String) → ()
+      Get information about the selected cryptocurrency depending on options
+    */
+    async getFromApiOptions(id) {
+      if (this.currency.includes(id.toUpperCase())) {
+  			this.sortcurrency = id.toUpperCase();
+  		} else if (this.timeperiod.includes(id)) {
+  			this.sorttimeperiod = id;
+  		}
+
+      /* Update items on the bottom */
+      for (var i = 0; i < this.cryptocurrencies.length; i++) {
+        var url = `https://api.coinranking.com/v1/public/coin/${this.cryptocurrencies[i].id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+        await this.$http
+          // eslint-disable-next-line
+          .get(url)
+          .then((response) => {
+            this.cryptocurrencies[i] = response.data.data.coin;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      }
+
+      /* Update the main cryptocurrency */
+      const url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+      await this.$http
+        .get(url_history)
+        .then((response) => {
+          this.history = response.data.data.history;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      // eslint-disable-next-line
+      url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+      await this.$http
+        // eslint-disable-next-line
+        .get(url)
+        .then((response) => {
+          this.cryptocurrency = response.data.data.coin;
+          this.base = response.data.data.base;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+  },
+};
+
+</script>
+
+<style scoped>
+/*
+  Details
+*/
+#option{
+  width: 15%;
+}
+
+#main-container{
+  padding-left: 30px;
+  padding-right: 30px;
+  font-family: Bahnschrift, sans-serif;
+  color: #fff;
+  width: 100%;
+}
+
+#other{
+  font-family: Bahnschrift, sans-serif;
+}
+
+#other-title{
+  margin: auto;
+  text-align: center;
+  margin-bottom: 10px;
+}
+
+#invalid-id{
+  font-family: Bahnschrift, sans-serif;
+  padding-top: 60px;
+  padding-bottom: 60px;
+  margin: auto;
+  text-align: center;
+  color: red;
+}
+
+@media screen and (max-device-width:480px), screen and (max-width: 900px) {
+  #main-container{
+    padding-left: 5px;
+    padding-right: 5px;
+    width: unset;
+  }
+
+  #option{
+    width: 100%;
+  }
+
+  .single-information{
+    width: 30%;
+    margin-bottom: 8px;
+  }
+
+  #invalid-id{
+    padding-top: 160px;
+  }
+
+  #crypto-title{
+    font-size: 5vw;
+  }
+
+  #img-crypto{
+    width: 63px;
+    height: 63px;
+  }
+
+  #description, .single-information{
+    font-size: 3vw;
+  }
+
+  #img-change{
+    width: 30px;
+    height: 30px;
+  }
+}
+</style>

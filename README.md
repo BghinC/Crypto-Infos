@@ -4,7 +4,11 @@
 
 ### Website created to discover Vuejs framework.
 
-Only .js files.
+Initially with .js files only.
+With Vue Cli since September 8th 2019.
+
+PWA application since September 8th 2019.
+
 Display information about cryptocurrencies.
 
 ### Index page

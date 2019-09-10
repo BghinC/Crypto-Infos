@@ -1,73 +1,77 @@
 <template>
   <div id="crypto">
-    <div class="div-color" id="main-informations">
-      <div id="container-crypto-color">
-        <div id="crypto-color" :style="{backgroundColor: cryptocurrency.color}"></div>
+    <Loading v-if="loading" />
+    <div v-else>
+      <div class="div-color" id="main-informations">
+        <div id="container-crypto-color">
+          <div id="crypto-color" :style="{backgroundColor: cryptocurrency.color}"></div>
+        </div>
+        <div id="title-container">
+          <img :src="cryptocurrency.iconUrl" id="img-crypto">
+          <h1 id="crypto-title">
+            {{cryptocurrency.name}}
+            <span id="symbol">
+              ({{cryptocurrency.symbol}})
+            </span>
+          </h1>
+        </div>
       </div>
-      <div id="title-container">
-        <img :src="cryptocurrency.iconUrl" id="img-crypto">
-        <h1 id="crypto-title">
-          {{cryptocurrency.name}}
-          <span id="symbol">
-            ({{cryptocurrency.symbol}})
-          </span>
-        </h1>
+      <div class="div-color" id="description">
+        <div>{{cryptocurrency.description}}</div>
       </div>
-    </div>
-    <div class="div-color" id="description">
-      <div>{{cryptocurrency.description}}</div>
-    </div>
-    <div id="global-information">
-      <div class="single-information">
-        <p>
-          Price:
-        </p>
-        <p id="single-information-change">
-          <img :src="getImgChange" id="img-change">
-          <span :class="getSpanChange">{{cryptocurrency.change}}</span>
-        </p>
-        <p>
-          <span>{{base.sign}}</span>
-          {{formatNumber(parseFloat(cryptocurrency.price).toFixed(5))}}
-        </p>
+      <div id="global-information">
+        <div class="single-information">
+          <p>
+            Price:
+          </p>
+          <p id="single-information-change">
+            <img :src="getImgChange" id="img-change">
+            <span :class="getSpanChange">{{cryptocurrency.change}}</span>
+          </p>
+          <p>
+            <span>{{base.sign}}</span>
+            {{formatNumber(parseFloat(cryptocurrency.price).toFixed(5))}}
+          </p>
+        </div>
+        <div class="single-information">
+          <p>Volume:</p>
+          <p>{{formatNumber(cryptocurrency.volume)}}</p>
+        </div>
+        <div class="single-information">
+          <p>Market Cap:</p>
+          <p>{{formatNumber(cryptocurrency.marketCap)}}</p>
+        </div>
+        <div class="single-information">
+          <p>Circulating supply:</p>
+          <p>{{formatNumber(cryptocurrency.circulatingSupply)}}</p>
+        </div>
+        <div class="single-information">
+          <p>Total supply:</p>
+          <p>{{formatNumber(cryptocurrency.totalSupply)}}</p>
+        </div>
+        <div class="single-information">
+          <p>All time high:</p>
+          <p>
+            <span>{{base.sign}}</span>
+            {{formatNumber(parseFloat(cryptocurrency.allTimeHigh.price).toFixed(5))}}
+          </p>
+        </div>
       </div>
-      <div class="single-information">
-        <p>Volume:</p>
-        <p>{{formatNumber(cryptocurrency.volume)}}</p>
+      <div id="chart-container">
+        <line-chart :history="history"></line-chart>
       </div>
-      <div class="single-information">
-        <p>Market Cap:</p>
-        <p>{{formatNumber(cryptocurrency.marketCap)}}</p>
-      </div>
-      <div class="single-information">
-        <p>Circulating supply:</p>
-        <p>{{formatNumber(cryptocurrency.circulatingSupply)}}</p>
-      </div>
-      <div class="single-information">
-        <p>Total supply:</p>
-        <p>{{formatNumber(cryptocurrency.totalSupply)}}</p>
-      </div>
-      <div class="single-information">
-        <p>All time high:</p>
-        <p>
-          <span>{{base.sign}}</span>
-          {{formatNumber(parseFloat(cryptocurrency.allTimeHigh.price).toFixed(5))}}
-        </p>
-      </div>
-    </div>
-    <div id="chart-container">
-      <line-chart :history="history"></line-chart>
     </div>
   </div>
 </template>
 
 <script>
 import LineChart from '@/components/charts/Line.vue';
+import Loading from '@/components/Loading.vue';
 
 export default {
   name: 'crypto-details',
-  props: ['cryptocurrency', 'base', 'history'],
-  components: { LineChart },
+  props: ['cryptocurrency', 'base', 'history', 'loading'],
+  components: { LineChart, Loading },
   computed: {
     /*
       getImgChange :: () → (String)
@@ -115,8 +119,10 @@ export default {
 
 <style scoped>
 #crypto-detail{
+  position: relative;
   width: 100%;
   height: 100%;
+  min-height: 175px;
 }
 
 .div-color{

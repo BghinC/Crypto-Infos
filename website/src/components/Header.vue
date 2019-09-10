@@ -26,6 +26,7 @@ min-width: 480px;
 height: 50px;
 background-color: #404040;
 position: fixed;
+z-index: 9999;
 top: 0;
 left: 0;
 }
@@ -71,7 +72,7 @@ cursor: pointer;
 
 @media screen and (max-device-width:480px), screen and (max-width: 900px) {
   header{
-    height: 150px;
+    height: 100px;
     min-width: unset;
   }
 

@@ -1,6 +1,6 @@
 {
-  "name": "cryptoinfo",
-  "short_name": "cryptoinfo",
+  "name": "CryptoInfo",
+  "short_name": "CryptoInfo",
   "icons": [
     {
       "src": "./img/icons/manifest-icon-192.png",
@@ -15,6 +15,6 @@
   ],
   "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#4DBA87"
+  "background_color": "#404040",
+  "theme_color": "#404040"
 }

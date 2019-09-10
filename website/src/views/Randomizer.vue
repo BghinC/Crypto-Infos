@@ -12,7 +12,8 @@
             v-if="history && cryptocurrency.allTimeHigh"
             :history="history"
             :cryptocurrency="cryptocurrency"
-            :base="base">
+            :base="base"
+            :loading="loadingDetails">
           </crypto-details>
       </div>
       <!-- / main-container -->
@@ -48,6 +49,8 @@ export default {
 
       history: [],
       base: {},
+
+      loadingDetails: true,
     };
   },
   created() {
@@ -83,6 +86,7 @@ export default {
       Get information about the selected cryptocurrency
     */
     getFromApi() {
+      this.loadingDetails = true;
       this.getRandomCoins().then(async (data) => {
         this.url = `https://api.coinranking.com/v1/public/coin/${data}`;
         this.url_history = `https://api.coinranking.com/v1/public/coin/${data}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
@@ -99,6 +103,7 @@ export default {
           .then((response) => {
             this.cryptocurrency = response.data.data.coin;
             this.base = response.data.data.base;
+            this.loadingDetails = false;
           })
           .catch((error) => {
             console.log(error);
@@ -113,6 +118,7 @@ export default {
       Get information about the selected cryptocurrency depending on options
     */
     async getFromApiOptions(id) {
+      this.loadingDetails = true;
       if (id === 'new') {
         this.getFromApi();
       } else {
@@ -141,6 +147,7 @@ export default {
             .then((response) => {
               this.cryptocurrency = response.data.data.coin;
               this.base = response.data.data.base;
+              this.loadingDetails = false;
             })
             .catch((error) => {
               console.log(error);

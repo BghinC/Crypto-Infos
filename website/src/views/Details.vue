@@ -12,7 +12,8 @@
             v-if="history && cryptocurrency.allTimeHigh"
             :history="history"
             :cryptocurrency="cryptocurrency"
-            :base="base">
+            :base="base"
+            :loading="loadingDetails">
           </crypto-details>
       </div>
       <!-- / main-container -->
@@ -20,7 +21,8 @@
     <!-- / main -->
     <div id="other">
       <h1 id="other-title">Explore others cryptocurrencies</h1>
-        <div id="container-crypto">
+        <Loading v-if="loadingCrypto" class="loading-crypto" />
+        <div id="container-crypto" v-else>
           <crypto v-for="item in cryptocurrencies" v-bind:cryptocurrencies="item" v-bind:key="item.id" :base="base"></crypto>
         </div>
     </div>
@@ -34,13 +36,12 @@ import Header from '@/components/Header.vue';
 import Menu from '@/components/Menu.vue';
 import Crypto from '@/components/Crypto.vue';
 import CryptoDetails from '@/components/CryptoDetails.vue';
+import Loading from '@/components/Loading.vue';
 import Footer from '@/components/Footer.vue';
 
 export default {
   name: 'Details',
-  components: {
-    Header, Menu, CryptoDetails, Crypto, Footer,
-  },
+  components: { Header, Menu, CryptoDetails, Crypto, Footer, Loading },
   data() {
     return {
       cryptocurrencies: [],
@@ -58,6 +59,9 @@ export default {
 
       history: [],
       base: {},
+      
+      loadingDetails: true,
+      loadingCrypto: true,
     };
   },
   watch: {
@@ -65,18 +69,19 @@ export default {
       handler() {
         this.url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`;
         this.url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/24h?base=USD`;
-        this.getFromApi();
+        this.getFromApiOptions(null);
         this.getRandomCoins();
       },
     },
   },
-  created() {
+  created () {
     /* When created we get datas about the main cryptocurrency and we get 3 rando cryptocurrencies to display */
     this.getFromApi();
     this.getRandomCoins();
   },
   methods: {
     async getFromApi() {
+      this.loadingDetails = true;
       /* Get the cryptocurrency history */
       await this.$http
         .get(this.url_history)
@@ -107,6 +112,7 @@ export default {
         .then((response) => {
           this.cryptocurrency = response.data.data.coin;
           this.base = response.data.data.base;
+          this.loadingDetails = false;
         }).catch((error) => {
           console.log(error);
         });
@@ -116,6 +122,7 @@ export default {
       Using to get an Array containing 3 random cryptocurrencies
     */
     async getRandomCoins() {
+      this.loadingCrypto = true;
       const self = this;
       const url_random = 'https://api.coinranking.com/v1/public/coins';
       let currency = [];
@@ -131,6 +138,8 @@ export default {
               currency.splice(index, 1);
             }
           }
+          console.log(self.cryptocurrencies)
+          this.loadingCrypto = false;
         })
         .catch((error) => {
           console.log(error);
@@ -141,13 +150,15 @@ export default {
       Get information about the selected cryptocurrency depending on options
     */
     async getFromApiOptions(id) {
-      if (this.currency.includes(id.toUpperCase())) {
+      this.loadingDetails = true;
+      if (id !== null && this.currency.includes(id.toUpperCase())) {
   			this.sortcurrency = id.toUpperCase();
   		} else if (this.timeperiod.includes(id)) {
   			this.sorttimeperiod = id;
   		}
 
       /* Update items on the bottom */
+      this.loadingCrypto = true;
       for (var i = 0; i < this.cryptocurrencies.length; i++) {
         var url = `https://api.coinranking.com/v1/public/coin/${this.cryptocurrencies[i].id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
         await this.$http
@@ -160,6 +171,7 @@ export default {
             console.log(error);
           });
       }
+      this.loadingCrypto = false;
 
       /* Update the main cryptocurrency */
       const url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
@@ -183,6 +195,7 @@ export default {
         .catch((error) => {
           console.log(error);
         });
+      this.loadingDetails = false;
     },
   },
 };
@@ -207,6 +220,14 @@ export default {
 
 #other{
   font-family: Bahnschrift, sans-serif;
+  position: relative;
+  min-height: 175px;
+}
+
+.loading-crypto {
+  bottom: 0;
+  top: unset;
+  transform: translate(-50%,0);
 }
 
 #other-title{

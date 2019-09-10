@@ -88,6 +88,7 @@ margin-left: 5px;
 display: flex;
 flex-wrap: wrap;
 justify-content: space-around;
+position: relative;
 }
 
 .crypto{
@@ -188,7 +189,7 @@ font-size: 20px;
 @media screen and (max-device-width:480px), screen and (max-width: 900px) {
   #main{
     flex-direction: column;
-    padding-top: 160px;
+    padding-top: 110px;
   }
 
   #option{

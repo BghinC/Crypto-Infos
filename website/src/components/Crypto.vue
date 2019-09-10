@@ -77,3 +77,65 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+
+.crypto{
+display: flex;
+justify-content: space-between;
+flex-direction: column;
+padding: 5px;
+width: 300px;
+margin-bottom: 30px;
+background-color: #8e8e8e;
+text-align: center;
+border-radius: 10px;
+}
+
+.img-crypto{
+margin-left: auto;
+margin-right: auto;
+width: 50px;
+height: 50px;
+}
+
+.crypto h1,
+.crypto a,
+.crypto h2,
+.crypto p{
+width: 100%;
+margin: auto;
+font-family: Bahnschrift, sans-serif;
+color: #fff;
+}
+
+.url-crypto{
+text-decoration: none;
+}
+
+.change{
+display: flex;
+justify-content: center;
+}
+
+@media screen and (max-device-width:480px), screen and (max-width: 900px) {
+  .crypto{
+    margin-top: 10px;
+    width: 40%;
+    height: 200px;
+  }
+
+  .img-crypto{
+    width: 65px;
+    height: 65px;
+  }
+
+  .crypto h1{
+    font-size: 4vw;
+  }
+
+  .crypto p{
+    font-size: 3vw;
+  }
+}
+</style>

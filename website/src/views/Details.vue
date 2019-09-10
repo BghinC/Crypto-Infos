@@ -138,7 +138,6 @@ export default {
               currency.splice(index, 1);
             }
           }
-          console.log(self.cryptocurrencies)
           this.loadingCrypto = false;
         })
         .catch((error) => {

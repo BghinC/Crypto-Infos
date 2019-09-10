@@ -91,44 +91,6 @@ justify-content: space-around;
 position: relative;
 }
 
-.crypto{
-display: flex;
-justify-content: space-between;
-flex-direction: column;
-padding: 5px;
-width: 300px;
-margin-bottom: 30px;
-background-color: #8e8e8e;
-text-align: center;
-border-radius: 10px;
-}
-
-.img-crypto{
-margin-left: auto;
-margin-right: auto;
-width: 50px;
-height: 50px;
-}
-
-.crypto h1,
-.crypto a,
-.crypto h2,
-.crypto p{
-width: 100%;
-margin: auto;
-font-family: Bahnschrift, sans-serif;
-color: #fff;
-}
-
-.url-crypto{
-text-decoration: none;
-}
-
-.change{
-display: flex;
-justify-content: center;
-}
-
 footer{
 width: 100%;
 display: flex;
@@ -203,25 +165,6 @@ font-size: 20px;
   .option-possibility{
     width: 23%;
     height: 60px;
-    font-size: 3vw;
-  }
-
-  .crypto{
-    margin-top: 10px;
-    width: 40%;
-    height: 300px;
-  }
-
-  .img-crypto{
-    width: 80px;
-    height: 80px;
-  }
-
-  .crypto h1{
-    font-size: 4vw;
-  }
-
-  .crypto p{
     font-size: 3vw;
   }
 

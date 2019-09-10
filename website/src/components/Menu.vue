@@ -80,3 +80,15 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+#option {
+  max-width: 194px;
+}
+
+@media screen and (max-width: 900px) {
+  #option {
+    max-width: unset;
+  }
+}
+</style>

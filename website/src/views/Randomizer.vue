@@ -119,45 +119,41 @@ export default {
     */
     async getFromApiOptions(id) {
       this.loadingDetails = true;
-      if (id === 'new') {
-        this.getFromApi();
-      } else {
-        this.getRandomCoins().then(() => {
-          if (this.currency.includes(id.toUpperCase())) {
-            this.sortcurrency = id.toUpperCase();
-          } else if (this.timeperiod.includes(id)) {
-            this.sorttimeperiod = id;
-          }
-          const urlSplit = this.url.split('?');
-          const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
-          const urlHistorySplit = this.url_history.split('y');
-          const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+      this.getRandomCoins().then(() => {
+        if (this.currency.includes(id.toUpperCase())) {
+          this.sortcurrency = id.toUpperCase();
+        } else if (this.timeperiod.includes(id)) {
+          this.sorttimeperiod = id;
+        }
+        const urlSplit = this.url.split('?');
+        const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+        const urlHistorySplit = this.url_history.split('y');
+        const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
 
-          this.$http
-            .get(urlHistory)
-            .then((response) => {
-              this.history = response.data.data.history;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-
-          this.$http
-            .get(url)
-            .then((response) => {
-              this.cryptocurrency = response.data.data.coin;
-              this.base = response.data.data.base;
-              this.loadingDetails = false;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
+        this.$http
+          .get(urlHistory)
+          .then((response) => {
+            this.history = response.data.data.history;
+          })
           .catch((error) => {
             console.log(error);
           });
-      }
-    },
+
+        this.$http
+          .get(url)
+          .then((response) => {
+            this.cryptocurrency = response.data.data.coin;
+            this.base = response.data.data.base;
+            this.loadingDetails = false;
+          })
+          .catch((error) => {
+            console.log(error);
+          });
+      })
+        .catch((error) => {
+          console.log(error);
+        });
+    }
   },
 };
 

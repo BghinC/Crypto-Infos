@@ -85,6 +85,7 @@ display: flex;
 justify-content: space-between;
 flex-direction: column;
 padding: 5px;
+margin: 0 5px;
 width: 300px;
 margin-bottom: 30px;
 background-color: #8e8e8e;

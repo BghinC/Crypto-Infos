@@ -88,7 +88,7 @@ export default {
     getFromApi() {
       this.loadingDetails = true;
       this.getRandomCoins().then(async (data) => {
-        this.url = `https://api.coinranking.com/v1/public/coin/${data}`;
+        this.url = `https://api.coinranking.com/v1/public/coin/${data}?timePeriod=${this.sorttimeperiod}&base=${this.sortcurrency}&`;
         this.url_history = `https://api.coinranking.com/v1/public/coin/${data}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
         await this.$http
           .get(this.url_history)
@@ -119,41 +119,45 @@ export default {
     */
     async getFromApiOptions(id) {
       this.loadingDetails = true;
-      this.getRandomCoins().then(() => {
-        if (this.currency.includes(id.toUpperCase())) {
-          this.sortcurrency = id.toUpperCase();
-        } else if (this.timeperiod.includes(id)) {
-          this.sorttimeperiod = id;
-        }
-        const urlSplit = this.url.split('?');
-        const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
-        const urlHistorySplit = this.url_history.split('y');
-        const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+      if (id === 'new') {
+        this.getFromApi();
+      } else {
+        this.getRandomCoins().then(() => {
+          if (this.currency.includes(id.toUpperCase())) {
+            this.sortcurrency = id.toUpperCase();
+          } else if (this.timeperiod.includes(id)) {
+            this.sorttimeperiod = id;
+          }
+          const urlSplit = this.url.split('?');
+          const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+          const urlHistorySplit = this.url_history.split('y');
+          const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
 
-        this.$http
-          .get(urlHistory)
-          .then((response) => {
-            this.history = response.data.data.history;
-          })
+          this.$http
+            .get(urlHistory)
+            .then((response) => {
+              this.history = response.data.data.history;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+
+          this.$http
+            .get(url)
+            .then((response) => {
+              this.cryptocurrency = response.data.data.coin;
+              this.base = response.data.data.base;
+              this.loadingDetails = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
           .catch((error) => {
             console.log(error);
           });
-
-        this.$http
-          .get(url)
-          .then((response) => {
-            this.cryptocurrency = response.data.data.coin;
-            this.base = response.data.data.base;
-            this.loadingDetails = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
+      }
+    },
   },
 };
 

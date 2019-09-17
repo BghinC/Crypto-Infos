@@ -14,6 +14,10 @@ body{
 background: url('assets/background.png')
 }
 
+input {
+  font-family: Bahnschrift, sans-serif;
+}
+
 .common-link:hover{
 color: #FF7F50;
 }

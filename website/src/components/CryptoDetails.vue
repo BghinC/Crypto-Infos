@@ -16,7 +16,7 @@
           </h1>
         </div>
       </div>
-      <div class="div-color" id="description">
+      <div v-if="cryptocurrency.description" class="div-color" id="description">
         <div>{{cryptocurrency.description}}</div>
       </div>
       <div id="global-information">
@@ -37,19 +37,19 @@
           <p>Volume:</p>
           <p>{{formatNumber(cryptocurrency.volume)}}</p>
         </div>
-        <div class="single-information">
+        <div v-if="cryptocurrency.marketCap" class="single-information">
           <p>Market Cap:</p>
           <p>{{formatNumber(cryptocurrency.marketCap)}}</p>
         </div>
-        <div class="single-information">
+        <div v-if="cryptocurrency.circulatingSupply" class="single-information">
           <p>Circulating supply:</p>
           <p>{{formatNumber(cryptocurrency.circulatingSupply)}}</p>
         </div>
-        <div class="single-information">
+        <div v-if="cryptocurrency.totalSupply" class="single-information">
           <p>Total supply:</p>
           <p>{{formatNumber(cryptocurrency.totalSupply)}}</p>
         </div>
-        <div class="single-information">
+        <div v-if="cryptocurrency.allTimeHigh.price" class="single-information">
           <p>All time high:</p>
           <p>
             <span>{{base.sign}}</span>
@@ -113,7 +113,7 @@ export default {
 
       return `${numbers[0]}.${numbers[1]}`;
     },
-  },
+  }
 };
 </script>
 

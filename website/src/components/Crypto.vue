@@ -5,14 +5,14 @@
     </router-link>
     <h1>
       <router-link :to="{ name: 'details', params: {id: cryptocurrencies.id }}" class="url-crypto">
-        {{ cryptocurrencies.name }}
+        {{ cryptocurrencies.name }} ({{ cryptocurrencies.symbol }})
       </router-link>
     </h1>
-    <h2>
+    <!-- <h2>
       <router-link :to="{ name: 'details', params: {id: cryptocurrencies.id }}" class="url-crypto">
         ({{ cryptocurrencies.symbol }})
       </router-link>
-    </h2>
+    </h2> -->
     <p class="price">
       <span>{{base.sign}}</span>
       {{formatNumber(parseFloat(cryptocurrencies.price).toFixed(5))}}
@@ -96,8 +96,21 @@ border-radius: 10px;
 .img-crypto{
 margin-left: auto;
 margin-right: auto;
-width: 50px;
-height: 50px;
+width: 65px;
+height: 65px;
+}
+
+.crypto h1 {
+  width: 100%;
+}
+
+.crypto h1 a {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: 100%;
+  display: block;
+  overflow: hidden;
 }
 
 .crypto h1,
@@ -108,6 +121,7 @@ width: 100%;
 margin: auto;
 font-family: Bahnschrift, sans-serif;
 color: #fff;
+margin-bottom: 5px;
 }
 
 .url-crypto{
@@ -119,20 +133,28 @@ display: flex;
 justify-content: center;
 }
 
+.change span {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
 @media screen and (max-device-width:480px), screen and (max-width: 900px) {
   .crypto{
     margin-top: 10px;
     width: 40%;
-    height: 200px;
   }
 
   .img-crypto{
-    width: 65px;
-    height: 65px;
+    width: 50px;
+    height: 50px;
   }
 
   .crypto h1{
     font-size: 4vw;
+  }
+
+  .crypto h2{
+    font-size: 3.5vw;
   }
 
   .crypto p{

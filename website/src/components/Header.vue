@@ -14,9 +14,39 @@
           Randomizer
         </router-link>
       </div>
+      <div class="search-container">
+        <input v-model="search" :change="getFromAPI()" type="text">
+        <img src="@/assets/search-icon.svg" alt="">
+      </div>
     </div>
   </header>
 </template>
+
+<script>
+export default {
+  name: 'Header',
+  data() {
+    return {
+      search: '',
+      cryptocurrencies: null,
+      base: null
+    }
+  },
+  methods: {
+    getFromAPI() {
+      this.$http
+        .get('https://api.coinranking.com/v1/public/coins?prefix=' + this.search)
+        .then((response) => {
+          this.cryptocurrencies = response.data.data.coins
+          this.base = response.data.data.base
+        })
+          .catch((error) => {
+            console.log(error);
+          });
+    }
+  }
+}
+</script>
 
 <style lang="css" scoped>
 /* Header */
@@ -70,6 +100,31 @@ margin: auto;
 cursor: pointer;
 }
 
+.search-container {
+  height: max-content;
+  margin-top: auto;
+  margin-bottom: auto;
+  position: relative;
+}
+
+.search-container input {
+  width: 150px;
+  height: 20px;
+  background-color: #ffffff;
+  border-radius: 8px;
+  border: none;
+  padding-left: 25px;
+}
+
+.search-container img {
+  width: 18px;
+  height: 18px;
+  cursor: pointer;
+  position: absolute;
+  left: 5px;
+  top: 1px;
+}
+
 @media screen and (max-device-width:480px), screen and (max-width: 900px) {
   header{
     height: 100px;
@@ -77,11 +132,15 @@ cursor: pointer;
   }
 
   .header-div{
-    font-size: 5vw;
+    font-size: 4vw;
   }
 
   #header-container-img{
     display: none;
+  }
+
+  .search-container input {
+    width: 100px;
   }
 }
 </style>

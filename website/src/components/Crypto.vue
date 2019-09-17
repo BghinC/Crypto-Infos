@@ -5,7 +5,7 @@
     </router-link>
     <h1>
       <router-link :to="{ name: 'details', params: {id: cryptocurrencies.id }}" class="url-crypto">
-        {{ cryptocurrencies.name }} ({{ cryptocurrencies.symbol }})
+        {{ cryptocurrencies.name }}
       </router-link>
     </h1>
     <!-- <h2>

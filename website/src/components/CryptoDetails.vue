@@ -24,16 +24,16 @@
           <p>
             Price:
           </p>
-          <p id="single-information-change">
+          <p v-if="cryptocurrency.change" id="single-information-change">
             <img :src="getImgChange" id="img-change">
             <span :class="getSpanChange">{{cryptocurrency.change}}</span>
           </p>
-          <p>
+          <p v-if="cryptocurrency.price">
             <span>{{base.sign}}</span>
             {{formatNumber(parseFloat(cryptocurrency.price).toFixed(5))}}
           </p>
         </div>
-        <div class="single-information">
+        <div v-if="cryptocurrency.volume" class="single-information">
           <p>Volume:</p>
           <p>{{formatNumber(cryptocurrency.volume)}}</p>
         </div>

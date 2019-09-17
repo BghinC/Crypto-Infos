@@ -2,11 +2,17 @@
   <div>
     <Header/>
     <div id="main">
+      <div v-if="error" id="invalid-id">
+        <h1 id="invalid">
+          Invalid id
+        </h1>
+      </div>
       <Menu
+        v-if="!error"
         :currency="currency"
         :timeperiod="timeperiod"
         v-on:update="getFromApiOptions($event)"/>
-      <div id="main-container">
+      <div v-if="!error" id="main-container">
         <crypto-details
             id="crypto-detail"
             v-if="history && cryptocurrency.allTimeHigh"
@@ -19,7 +25,7 @@
       <!-- / main-container -->
     </div>
     <!-- / main -->
-    <div id="other">
+    <div v-if="!error" id="other">
       <h1 id="other-title">Explore others cryptocurrencies</h1>
         <Loading v-if="loadingCrypto" class="loading-crypto" />
         <div id="container-crypto" v-else>
@@ -62,11 +68,14 @@ export default {
       
       loadingDetails: true,
       loadingCrypto: true,
+
+      error: false,
     };
   },
   watch: {
     '$route.params.id': {
       handler() {
+        this.error = false;
         this.url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`;
         this.url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/24h?base=USD`;
         this.getFromApiOptions(null);
@@ -89,22 +98,7 @@ export default {
           this.history = response.data.data.history;
         }).catch((error) => {
         /* Supress useless div */
-          let element = document.getElementById('option');
-          element.parentNode.removeChild(element);
-          element = document.getElementById('main-container');
-          element.parentNode.removeChild(element);
-          element = document.getElementById('other');
-          element.parentNode.removeChild(element);
-
-          /* Display an error div */
-          const p = document.getElementById('main');
-          const div = document.createElement('div');
-          div.setAttribute('id', 'invalid-id');
-          const h = document.createElement('h1');
-          h.setAttribute('id', 'invalid');
-          h.innerHTML = 'Invalid id';
-          p.appendChild(div);
-          div.appendChild(h);
+          this.error = true
         });
       /* Get current data about the cryptocurrency */
       this.$http

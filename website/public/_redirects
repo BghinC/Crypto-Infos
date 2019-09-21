@@ -1,5 +1,5 @@
 # Redirect default Netlify subdomain to primary domain
-https://dazzling-allen-d0469d.netlify.com/* https://house.bghinc.fr/:splat 301!
+https://dazzling-allen-d0469d.netlify.com/* https://cryptoinfo.bghinc.fr/:splat 301!
 
 # Redirect all urls to index.html
 /* /index.html 200

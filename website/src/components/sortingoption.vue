@@ -3,7 +3,7 @@
     ref="sorting"
     :id="currency"
     class="option-possibility"
-    :class="classColorName"
+    :class="[classColorName, mobileClass]"
     @click="changeBackground(currency)">
     <span class="option-possibility-span">
       {{ currency }}
@@ -14,9 +14,12 @@
 <script>
 export default {
   name: 'sortingoptioncurrency',
-  props: ['currency', 'classColorName'],
+  props: ['currency', 'classColorName', 'mobileClass'],
   mounted() {
     document.getElementsByClassName(this.classColorName)[0].style.backgroundColor = '#FF7F50';
+    if (this.mobileClass) {
+      document.getElementsByClassName(this.mobileClass)[0].style.backgroundColor = '#FF7F50';
+    }
   },
   methods: {
     changeBackground(id) {
@@ -42,3 +45,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+@media screen and (max-width: 900px) {
+  .option-possibility {
+    width: 30%;
+    color: #fff;
+  }
+}
+</style>

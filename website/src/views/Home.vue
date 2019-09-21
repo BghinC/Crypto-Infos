@@ -1,8 +1,9 @@
 <template>
   <div>
-    <Header/>
+    <Header v-on:menu="manageMenu()"/>
     <div id="main">
       <Menu
+        :responsive="showMenu"
         :currency="currency"
         :timeperiod="timeperiod"
         :sortoption="sortoption"
@@ -57,6 +58,8 @@ export default {
       order: ['Desc', 'Asc'],
       base: null,
       loadingCrypto: true,
+
+      showMenu: false,
     };
   },
   methods: {
@@ -67,12 +70,12 @@ export default {
     getFromApi() {
       this.loadingCrypto = true;
       this.$http
-      .get(url)
-      .then((response) => {
-        this.cryptocurrencies = response.data.data.coins,
-        this.base = response.data.data.base;
-        this.loadingCrypto = false;
-      })
+        .get(url)
+        .then((response) => {
+          this.cryptocurrencies = response.data.data.coins,
+          this.base = response.data.data.base;
+          this.loadingCrypto = false;
+        })
         .catch((error) => {
           console.log(error);
         });
@@ -107,14 +110,17 @@ export default {
           console.log(error);
         });
     },
+    manageMenu() {
+      this.showMenu = !this.showMenu
+    },
   },
   created() {
     /* When created we get datas about the cryptocurrencies */
     this.getFromApi();
   },
-  };
+};
 
-  </script>
+</script>
 
   <style scoped>
   #loading {

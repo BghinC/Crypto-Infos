@@ -1,8 +1,9 @@
 <template>
   <div>
-    <Header/>
+    <Header v-on:menu="manageMenu()"/>
     <div id="main">
       <Menu
+        :responsive="showMenu"
         :currency="currency"
         :timeperiod="timeperiod"
         v-on:update="getFromApiOptions($event)"/>
@@ -51,6 +52,8 @@ export default {
       base: {},
 
       loadingDetails: true,
+
+      showMenu: false,
     };
   },
   created() {
@@ -158,7 +161,10 @@ export default {
           });
       }
     },
-  },
+    manageMenu() {
+      this.showMenu = !this.showMenu
+    },
+  }
 };
 
 </script>

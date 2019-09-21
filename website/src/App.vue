@@ -155,7 +155,7 @@ font-size: 20px;
 @media screen and (max-device-width:480px), screen and (max-width: 900px) {
   #main{
     flex-direction: column;
-    padding-top: 110px;
+    padding-top: 100px;
   }
 
   #option{

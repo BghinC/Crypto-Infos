@@ -2,6 +2,7 @@
   <header>
     <div id="header-container-img">
       <img id="logo-header" src="@/assets/logo.png">
+      <img id="menu-icon" src="@/assets/menu-icon.svg" alt="" @click="$emit('menu')">
     </div>
     <div id="header-container">
       <div class="header-div">
@@ -34,7 +35,7 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside'
+import ClickOutside from 'vue-click-outside';
 
 export default {
   name: 'Header',
@@ -43,34 +44,34 @@ export default {
       search: '',
       cryptocurrencies: null,
       base: null,
-      show: false
-    }
+      show: false,
+    };
   },
   watch: {
     search: {
-        handler: function(val, oldVal) {
-          if (this.search.length > 0) {
-            this.show = true
-            this.getFromAPI() // call it in the context of your component object
-          }
-        },
-        deep: true
-    }
+      handler(val, oldVal) {
+        if (this.search.length > 0) {
+          this.show = true;
+          this.getFromAPI(); // call it in the context of your component object
+        }
+      },
+      deep: true,
+    },
   },
   methods: {
     getFromAPI() {
       this.$http
-        .get('https://api.coinranking.com/v1/public/coins?prefix=' + this.search)
+        .get(`https://api.coinranking.com/v1/public/coins?prefix=${this.search}`)
         .then((response) => {
-          this.cryptocurrencies = response.data.data.coins
-          this.base = response.data.data.base
+          this.cryptocurrencies = response.data.data.coins;
+          this.base = response.data.data.base;
         })
-          .catch((error) => {
-            console.log(error);
-          });
+        .catch((error) => {
+          console.log(error);
+        });
     },
     setShowToFalse() {
-      this.show = false
+      this.show = false;
     },
     formatNumber(number) {
       const numbers = number.toString().split('.');
@@ -93,12 +94,12 @@ export default {
       }
       // eslint-disable-next-line
       return require('../assets/down.png');
-    }
+    },
   },
   directives: {
-    ClickOutside
-  }
-}
+    ClickOutside,
+  },
+};
 </script>
 
 <style lang="css" scoped>
@@ -119,6 +120,10 @@ display: flex;
 float: left;
 height: 100%;
 width: 98px;
+}
+
+#menu-icon {
+  display: none;
 }
 
 #logo-header{
@@ -249,7 +254,15 @@ cursor: pointer;
     font-size: 13.33px;
   }
 
-  #header-container-img{
+  #menu-icon{
+    display: block;
+    margin: auto;
+    height: 40px;
+    width: 40px;
+    cursor: pointer;
+  }
+
+  #logo-header{
     display: none;
   }
 

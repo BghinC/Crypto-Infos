@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header/>
+    <Header v-on:menu="manageMenu()"/>
     <div id="main">
       <div v-if="error" id="invalid-id">
         <h1 id="invalid">
@@ -9,6 +9,7 @@
       </div>
       <Menu
         v-if="!error"
+        :responsive="showMenu"
         :currency="currency"
         :timeperiod="timeperiod"
         v-on:update="getFromApiOptions($event)"/>
@@ -47,7 +48,9 @@ import Footer from '@/components/Footer.vue';
 
 export default {
   name: 'Details',
-  components: { Header, Menu, CryptoDetails, Crypto, Footer, Loading },
+  components: {
+    Header, Menu, CryptoDetails, Crypto, Footer, Loading,
+  },
   data() {
     return {
       cryptocurrencies: [],
@@ -65,11 +68,13 @@ export default {
 
       history: [],
       base: {},
-      
+
       loadingDetails: true,
       loadingCrypto: true,
 
       error: false,
+
+      showMenu: false,
     };
   },
   watch: {
@@ -83,7 +88,7 @@ export default {
       },
     },
   },
-  created () {
+  created() {
     /* When created we get datas about the main cryptocurrency and we get 3 rando cryptocurrencies to display */
     this.getFromApi();
     this.getRandomCoins();
@@ -98,7 +103,7 @@ export default {
           this.history = response.data.data.history;
         }).catch((error) => {
         /* Supress useless div */
-          this.error = true
+          this.error = true;
         });
       /* Get current data about the cryptocurrency */
       this.$http
@@ -189,6 +194,9 @@ export default {
           console.log(error);
         });
       this.loadingDetails = false;
+    },
+    manageMenu() {
+      this.showMenu = !this.showMenu
     },
   },
 };

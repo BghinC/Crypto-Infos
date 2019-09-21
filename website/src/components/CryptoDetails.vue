@@ -113,7 +113,7 @@ export default {
 
       return `${numbers[0]}.${numbers[1]}`;
     },
-  }
+  },
 };
 </script>
 

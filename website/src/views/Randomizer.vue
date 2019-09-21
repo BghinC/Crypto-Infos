@@ -162,9 +162,9 @@ export default {
       }
     },
     manageMenu() {
-      this.showMenu = !this.showMenu
+      this.showMenu = !this.showMenu;
     },
-  }
+  },
 };
 
 </script>

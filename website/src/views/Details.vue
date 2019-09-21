@@ -196,7 +196,7 @@ export default {
       this.loadingDetails = false;
     },
     manageMenu() {
-      this.showMenu = !this.showMenu
+      this.showMenu = !this.showMenu;
     },
   },
 };

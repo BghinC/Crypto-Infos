@@ -1,6 +1,8 @@
 # Crypto Infos
 
-[Go to the website](https://cryptoinfo.bghinc.fr/)
+[![Netlify Status](https://api.netlify.com/api/v1/badges/02d090ff-9d35-4714-84ec-da71bf544ced/deploy-status)](https://app.netlify.com/sites/dazzling-allen-d0469d/deploys)
+
+[https://cryptoinfo.bghinc.fr/](https://cryptoinfo.bghinc.fr/)
 
 ### Website created to discover Vuejs framework.
 

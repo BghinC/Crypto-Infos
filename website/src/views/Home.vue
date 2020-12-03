@@ -28,11 +28,11 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Menu from "@/components/Menu.vue";
-import Crypto from "@/components/Crypto.vue";
-import Loading from "@/components/Loading.vue";
-import Footer from "@/components/Footer.vue";
+import Header from '@/components/Header.vue';
+import Menu from '@/components/Menu.vue';
+import Crypto from '@/components/Crypto.vue';
+import Loading from '@/components/Loading.vue';
+import Footer from '@/components/Footer.vue';
 
 /* Limit of cryptocurrencies */
 const limitcrypto = 10;
@@ -41,7 +41,7 @@ const limitcrypto = 10;
 let url = `https://api.coinranking.com/v1/public/coins?limit=${limitcrypto}`;
 
 export default {
-  name: "Home",
+  name: 'Home',
   components: {
     Header,
     Menu,
@@ -52,16 +52,16 @@ export default {
   data() {
     return {
       /* Default options */
-      sortcurrency: "USD",
-      sorttimeperiod: "24h",
-      sortby: "coinranking",
-      orderoption: "desc",
+      sortcurrency: 'USD',
+      sorttimeperiod: '24h',
+      sortby: 'coinranking',
+      orderoption: 'desc',
 
       cryptocurrencies: [],
-      currency: ["USD", "EUR", "JPY", "CZK", "GBP", "BTC", "ETH"],
-      timeperiod: ["24h", "7d", "30d"],
-      sortoption: ["Coin ranking", "Price", "Market Cap", "Change"],
-      order: ["Desc", "Asc"],
+      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
+      timeperiod: ['24h', '7d', '30d'],
+      sortoption: ['Coin ranking', 'Price', 'Market Cap', 'Change'],
+      order: ['Desc', 'Asc'],
       base: null,
       loadingCrypto: true,
 
@@ -78,8 +78,8 @@ export default {
       this.$http
         .get(url)
         .then((response) => {
-          (this.cryptocurrencies = response.data.data.coins),
-            (this.base = response.data.data.base);
+          this.cryptocurrencies = response.data.data.coins;
+          this.base = response.data.data.base;
           this.loadingCrypto = false;
         })
         .catch((error) => {
@@ -90,7 +90,8 @@ export default {
       getFromApiOptions :: (String, String) → ()
       Get information about cryptocurrencies depending on selected options
     */
-    getFromApiOptions(id) {
+    getFromApiOptions(_id) {
+      let id = _id;
       this.loadingCrypto = true;
       if (this.currency.includes(id.toUpperCase())) {
         this.sortcurrency = id.toUpperCase();
@@ -99,8 +100,8 @@ export default {
       } else if (
         !this.order.includes(id.charAt(0).toUpperCase() + id.substring(1))
       ) {
-        if (id == "marketcap") {
-          id = "marketCap";
+        if (id === 'marketcap') {
+          id = 'marketCap';
         }
         this.sortby = id;
       }

@@ -26,13 +26,13 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Menu from "@/components/Menu.vue";
-import CryptoDetails from "@/components/CryptoDetails.vue";
-import Footer from "@/components/Footer.vue";
+import Header from '@/components/Header.vue';
+import Menu from '@/components/Menu.vue';
+import CryptoDetails from '@/components/CryptoDetails.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
-  name: "Randomizer",
+  name: 'Randomizer',
   components: {
     Header,
     Menu,
@@ -44,14 +44,14 @@ export default {
       cryptocurrency: {},
 
       /* Default options */
-      sortcurrency: "USD",
-      sorttimeperiod: "24h",
+      sortcurrency: 'USD',
+      sorttimeperiod: '24h',
 
-      url: "",
-      url_history: "",
+      url: '',
+      url_history: '',
 
-      currency: ["USD", "EUR", "JPY", "CZK", "GBP", "BTC", "ETH"],
-      timeperiod: ["24h", "7d", "30d", "1y", "5y"],
+      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
+      timeperiod: ['24h', '7d', '30d', '1y', '5y'],
 
       history: [],
       base: {},
@@ -72,7 +72,7 @@ export default {
       Return a random cryptocurrency
     */
     getRandomCoins() {
-      const urlRandom = "https://api.coinranking.com/v1/public/coins";
+      const urlRandom = 'https://api.coinranking.com/v1/public/coins';
       let currency = [];
       return this.$http
         .get(urlRandom)
@@ -128,7 +128,7 @@ export default {
     */
     async getFromApiOptions(id) {
       this.loadingDetails = true;
-      if (id === "new") {
+      if (id === 'new') {
         this.getFromApi();
       } else {
         this.getRandomCoins()
@@ -138,9 +138,9 @@ export default {
             } else if (this.timeperiod.includes(id)) {
               this.sorttimeperiod = id;
             }
-            const urlSplit = this.url.split("?");
+            const urlSplit = this.url.split('?');
             const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
-            const urlHistorySplit = this.url_history.split("y");
+            const urlHistorySplit = this.url_history.split('y');
             const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
 
             this.$http

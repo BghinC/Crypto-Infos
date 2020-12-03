@@ -55,13 +55,13 @@
 </template>
 
 <script>
-import ClickOutside from "vue-click-outside";
+import ClickOutside from 'vue-click-outside';
 
 export default {
-  name: "Header",
+  name: 'Header',
   data() {
     return {
-      search: "",
+      search: '',
       cryptocurrencies: null,
       base: null,
       show: false,
@@ -69,7 +69,7 @@ export default {
   },
   watch: {
     search: {
-      handler(val, oldVal) {
+      handler() {
         if (this.search.length > 0) {
           this.show = true;
           this.getFromAPI(); // call it in the context of your component object
@@ -82,7 +82,7 @@ export default {
     getFromAPI() {
       this.$http
         .get(
-          `https://api.coinranking.com/v1/public/coins?prefix=${this.search}`
+          `https://api.coinranking.com/v1/public/coins?prefix=${this.search}`,
         )
         .then((response) => {
           this.cryptocurrencies = response.data.data.coins;
@@ -96,9 +96,9 @@ export default {
       this.show = false;
     },
     formatNumber(number) {
-      const numbers = number.toString().split(".");
-      numbers[0] += "";
-      const sep = " ";
+      const numbers = number.toString().split('.');
+      numbers[0] += '';
+      const sep = ' ';
       const reg = /(\d+)(\d{3})/;
       while (reg.test(numbers[0])) {
         numbers[0] = numbers[0].replace(reg, `$1${sep}$2`);

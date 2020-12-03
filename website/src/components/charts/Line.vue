@@ -1,8 +1,8 @@
 <script>
-import VueChartJs from "vue-chartjs";
+import VueChartJs from 'vue-chartjs';
 
 export default {
-  name: "LineChart",
+  name: 'LineChart',
   extends: VueChartJs.Line,
   props: {
     history: { type: Array, default: null },
@@ -18,14 +18,14 @@ export default {
           labels: this.getTimestamp(),
           datasets: [
             {
-              label: "Price",
-              backgroundColor: ["rgba(255, 127, 80, 0.4)"],
-              pointBackgroundColor: "rgba(255, 127, 80, 0.6)",
+              label: 'Price',
+              backgroundColor: ['rgba(255, 127, 80, 0.4)'],
+              pointBackgroundColor: 'rgba(255, 127, 80, 0.6)',
               data: this.getPrice(),
             },
           ],
         },
-        { responsive: true, maintainAspectRatio: false }
+        { responsive: true, maintainAspectRatio: false },
       );
     },
     /*

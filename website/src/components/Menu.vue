@@ -148,7 +148,7 @@
 </template>
 
 <script>
-import sortingoption from "@/components/sortingoption.vue";
+import sortingoption from '@/components/sortingoption.vue';
 
 export default {
   components: { sortingoption },

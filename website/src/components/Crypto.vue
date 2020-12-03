@@ -32,7 +32,7 @@
 
 <script>
 export default {
-  props: ["cryptocurrencies", "base"],
+  props: ['cryptocurrencies', 'base'],
   computed: {
     /*
       url :: () → (String)
@@ -59,17 +59,17 @@ export default {
     */
     getSpanChange() {
       if (parseFloat(this.cryptocurrencies.change) > 0) {
-        return "up";
+        return 'up';
       }
 
-      return "down";
+      return 'down';
     },
   },
   methods: {
     formatNumber(number) {
-      const numbers = number.toString().split(".");
-      numbers[0] += "";
-      const sep = " ";
+      const numbers = number.toString().split('.');
+      numbers[0] += '';
+      const sep = ' ';
       const reg = /(\d+)(\d{3})/;
       while (reg.test(numbers[0])) {
         numbers[0] = numbers[0].replace(reg, `$1${sep}$2`);

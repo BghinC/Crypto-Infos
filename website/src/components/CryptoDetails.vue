@@ -68,12 +68,12 @@
 </template>
 
 <script>
-import LineChart from "@/components/charts/Line.vue";
-import Loading from "@/components/Loading.vue";
+import LineChart from '@/components/charts/Line.vue';
+import Loading from '@/components/Loading.vue';
 
 export default {
-  name: "crypto-details",
-  props: ["cryptocurrency", "base", "history", "loading"],
+  name: 'crypto-details',
+  props: ['cryptocurrency', 'base', 'history', 'loading'],
   components: { LineChart, Loading },
   computed: {
     /*
@@ -95,17 +95,17 @@ export default {
     */
     getSpanChange() {
       if (parseFloat(this.cryptocurrency.change) > 0) {
-        return "up";
+        return 'up';
       }
 
-      return "down";
+      return 'down';
     },
   },
   methods: {
     formatNumber(number) {
-      const numbers = number.toString().split(".");
-      numbers[0] += "";
-      const sep = " ";
+      const numbers = number.toString().split('.');
+      numbers[0] += '';
+      const sep = ' ';
       const reg = /(\d+)(\d{3})/;
       while (reg.test(numbers[0])) {
         numbers[0] = numbers[0].replace(reg, `$1${sep}$2`);

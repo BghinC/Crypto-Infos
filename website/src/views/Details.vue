@@ -44,15 +44,15 @@
 </template>
 
 <script>
-import Header from "@/components/Header.vue";
-import Menu from "@/components/Menu.vue";
-import Crypto from "@/components/Crypto.vue";
-import CryptoDetails from "@/components/CryptoDetails.vue";
-import Loading from "@/components/Loading.vue";
-import Footer from "@/components/Footer.vue";
+import Header from '@/components/Header.vue';
+import Menu from '@/components/Menu.vue';
+import Crypto from '@/components/Crypto.vue';
+import CryptoDetails from '@/components/CryptoDetails.vue';
+import Loading from '@/components/Loading.vue';
+import Footer from '@/components/Footer.vue';
 
 export default {
-  name: "Details",
+  name: 'Details',
   components: {
     Header,
     Menu,
@@ -67,14 +67,14 @@ export default {
       cryptocurrency: {},
 
       /* Default options */
-      sortcurrency: "USD",
-      sorttimeperiod: "24h",
+      sortcurrency: 'USD',
+      sorttimeperiod: '24h',
 
       url: `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`,
       url_history: `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/24h?base=USD`,
 
-      currency: ["USD", "EUR", "JPY", "CZK", "GBP", "BTC", "ETH"],
-      timeperiod: ["24h", "7d", "30d", "1y", "5y"],
+      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
+      timeperiod: ['24h', '7d', '30d', '1y', '5y'],
 
       history: [],
       base: {},
@@ -88,7 +88,7 @@ export default {
     };
   },
   watch: {
-    "$route.params.id": {
+    '$route.params.id': {
       handler() {
         this.error = false;
         this.url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}`;
@@ -99,7 +99,10 @@ export default {
     },
   },
   created() {
-    /* When created we get datas about the main cryptocurrency and we get 3 rando cryptocurrencies to display */
+    /**
+     * When created we get datas about the main cryptocurrency
+     * and we get 3 rando cryptocurrencies to display
+     */
     this.getFromApi();
     this.getRandomCoins();
   },
@@ -112,7 +115,7 @@ export default {
         .then((response) => {
           this.history = response.data.data.history;
         })
-        .catch((error) => {
+        .catch(() => {
           /* Supress useless div */
           this.error = true;
         });
@@ -135,10 +138,10 @@ export default {
     async getRandomCoins() {
       this.loadingCrypto = true;
       const self = this;
-      const url_random = "https://api.coinranking.com/v1/public/coins";
+      const urlRandom = 'https://api.coinranking.com/v1/public/coins';
       let currency = [];
       await this.$http
-        .get(url_random)
+        .get(urlRandom)
         .then((response) => {
           currency = response.data.data.coins;
           for (let i = 0; i < 3; i += 1) {
@@ -169,24 +172,30 @@ export default {
 
       /* Update items on the bottom */
       this.loadingCrypto = true;
-      for (var i = 0; i < this.cryptocurrencies.length; i++) {
-        var url = `https://api.coinranking.com/v1/public/coin/${this.cryptocurrencies[i].id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
-        await this.$http
-          // eslint-disable-next-line
-          .get(url)
-          .then((response) => {
-            this.cryptocurrencies[i] = response.data.data.coin;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
+      const promises = [];
+      for (let i = 0; i < this.cryptocurrencies.length; i += 1) {
+        const url = `https://api.coinranking.com/v1/public/coin/${this.cryptocurrencies[i].id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+        promises.push(
+          new Promise((resolve, reject) => {
+            this.$http
+              .get(url)
+              .then((response) => {
+                this.cryptocurrencies[i] = response.data.data.coin;
+                resolve(response);
+              })
+              .catch((error) => {
+                reject(error);
+              });
+          }),
+        );
       }
+      await Promise.all(promises);
       this.loadingCrypto = false;
 
       /* Update the main cryptocurrency */
-      const url_history = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+      const urlHistory = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
       await this.$http
-        .get(url_history)
+        .get(urlHistory)
         .then((response) => {
           this.history = response.data.data.history;
         })
@@ -194,7 +203,7 @@ export default {
           console.log(error);
         });
       // eslint-disable-next-line
-      url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+      const url = `https://api.coinranking.com/v1/public/coin/${this.$route.params.id}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
       await this.$http
         // eslint-disable-next-line
         .get(url)

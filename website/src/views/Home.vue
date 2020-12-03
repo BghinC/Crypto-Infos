@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header v-on:menu="manageMenu()"/>
+    <Header v-on:menu="manageMenu()" />
     <div id="main">
       <Menu
         :responsive="showMenu"
@@ -8,7 +8,8 @@
         :timeperiod="timeperiod"
         :sortoption="sortoption"
         :order="order"
-        v-on:update="getFromApiOptions($event)"/>
+        v-on:update="getFromApiOptions($event)"
+      />
       <div id="container-crypto">
         <Loading id="loading" v-if="loadingCrypto" />
         <crypto
@@ -16,21 +17,22 @@
           v-for="item in cryptocurrencies"
           v-bind:cryptocurrencies="item"
           v-bind:key="item.id"
-          :base="base"/>
+          :base="base"
+        />
       </div>
       <!-- / container-crypto -->
     </div>
     <!-- / main -->
-    <Footer/>
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
-import Menu from '@/components/Menu.vue';
-import Crypto from '@/components/Crypto.vue';
-import Loading from '@/components/Loading.vue';
-import Footer from '@/components/Footer.vue';
+import Header from "@/components/Header.vue";
+import Menu from "@/components/Menu.vue";
+import Crypto from "@/components/Crypto.vue";
+import Loading from "@/components/Loading.vue";
+import Footer from "@/components/Footer.vue";
 
 /* Limit of cryptocurrencies */
 const limitcrypto = 10;
@@ -39,23 +41,27 @@ const limitcrypto = 10;
 let url = `https://api.coinranking.com/v1/public/coins?limit=${limitcrypto}`;
 
 export default {
-  name: 'Home',
+  name: "Home",
   components: {
-    Header, Menu, Crypto, Loading, Footer,
+    Header,
+    Menu,
+    Crypto,
+    Loading,
+    Footer,
   },
   data() {
     return {
       /* Default options */
-      sortcurrency: 'USD',
-      sorttimeperiod: '24h',
-      sortby: 'coinranking',
-      orderoption: 'desc',
+      sortcurrency: "USD",
+      sorttimeperiod: "24h",
+      sortby: "coinranking",
+      orderoption: "desc",
 
       cryptocurrencies: [],
-      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
-      timeperiod: ['24h', '7d', '30d'],
-      sortoption: ['Coin ranking', 'Price', 'Market Cap', 'Change'],
-      order: ['Desc', 'Asc'],
+      currency: ["USD", "EUR", "JPY", "CZK", "GBP", "BTC", "ETH"],
+      timeperiod: ["24h", "7d", "30d"],
+      sortoption: ["Coin ranking", "Price", "Market Cap", "Change"],
+      order: ["Desc", "Asc"],
       base: null,
       loadingCrypto: true,
 
@@ -72,8 +78,8 @@ export default {
       this.$http
         .get(url)
         .then((response) => {
-          this.cryptocurrencies = response.data.data.coins,
-          this.base = response.data.data.base;
+          (this.cryptocurrencies = response.data.data.coins),
+            (this.base = response.data.data.base);
           this.loadingCrypto = false;
         })
         .catch((error) => {
@@ -90,8 +96,12 @@ export default {
         this.sortcurrency = id.toUpperCase();
       } else if (this.timeperiod.includes(id)) {
         this.sorttimeperiod = id;
-      } else if (!this.order.includes(id.charAt(0).toUpperCase() + id.substring(1))) {
-        if (id == 'marketcap') { id = 'marketCap'; }
+      } else if (
+        !this.order.includes(id.charAt(0).toUpperCase() + id.substring(1))
+      ) {
+        if (id == "marketcap") {
+          id = "marketCap";
+        }
         this.sortby = id;
       }
       url = `https://api.coinranking.com/v1/public/coins?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}&sort=${this.sortby}&limit=10`;
@@ -119,26 +129,25 @@ export default {
     this.getFromApi();
   },
 };
-
 </script>
 
   <style scoped>
+#loading {
+  transform: translate(0, -50%);
+  right: 500px;
+  left: unset;
+}
+
+@media screen and (max-width: 900px) {
   #loading {
-    transform: translate(0,-50%);
-    right: 500px;
-    left: unset;
+    top: 25px;
+    transform: translate(-50%, 0);
+    right: unset;
+    left: 50%;
   }
 
-  @media screen and (max-width: 900px) {
-    #loading {
-      top: 25px;
-      transform: translate(-50%,0);
-      right: unset;
-      left: 50%;
-    }
-
-    #container-crypto {
-      min-height: 200px;
-    }
+  #container-crypto {
+    min-height: 200px;
   }
-  </style>
+}
+</style>

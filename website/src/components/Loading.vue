@@ -1,6 +1,6 @@
 <template>
   <div class="loading-container">
-    <img src="@/assets/loading.gif" alt="Loading ...">
+    <img src="@/assets/loading.gif" alt="Loading ..." />
   </div>
 </template>
 
@@ -9,7 +9,7 @@
   position: absolute;
   top: 50%;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
 }
 
 img {

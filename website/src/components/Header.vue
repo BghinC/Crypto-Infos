@@ -1,32 +1,52 @@
 <template>
   <header>
     <div id="header-container-img">
-      <img id="logo-header" src="@/assets/logo.png">
-      <img id="menu-icon" src="@/assets/menu-icon.svg" alt="" @click="$emit('menu')">
+      <img id="logo-header" src="@/assets/logo.png" />
+      <img
+        id="menu-icon"
+        src="@/assets/menu-icon.svg"
+        alt=""
+        @click="$emit('menu')"
+      />
     </div>
     <div id="header-container">
       <div class="header-div">
-        <router-link :to="{ name: 'home'}" class="common-link">
+        <router-link :to="{ name: 'home' }" class="common-link">
           Home
         </router-link>
       </div>
       <div class="header-div">
-        <router-link :to="{ name: 'randomizer'}" class="common-link">
+        <router-link :to="{ name: 'randomizer' }" class="common-link">
           Randomizer
         </router-link>
       </div>
       <div class="search-container">
-        <input v-model="search" type="text" v-click-outside="setShowToFalse" v-on:click="show = true">
-        <img src="@/assets/search-icon.svg" alt="" class="search-icon">
+        <input
+          v-model="search"
+          type="text"
+          v-click-outside="setShowToFalse"
+          v-on:click="show = true"
+        />
+        <img src="@/assets/search-icon.svg" alt="" class="search-icon" />
         <ul v-if="cryptocurrencies && show" class="search-list">
-          <router-link v-for="(item, index) in cryptocurrencies" :key="index" :to="{ name: 'details', params: {id: item.id }}">
-          <li>
-            <img :src="item.iconUrl" alt="" class="crypto-img">
-            <div class="search-list-info">
-              <p><span class="crypto-name">{{item.name}}</span> <img class="change" :src="getImgChange(item.change)"></p>
-              <p>{{base.sign}} {{formatNumber(parseFloat(item.price).toFixed(2))}}</p>
-            </div>
-          </li>
+          <router-link
+            v-for="(item, index) in cryptocurrencies"
+            :key="index"
+            :to="{ name: 'details', params: { id: item.id } }"
+          >
+            <li>
+              <img :src="item.iconUrl" alt="" class="crypto-img" />
+              <div class="search-list-info">
+                <p>
+                  <span class="crypto-name">{{ item.name }}</span>
+                  <img class="change" :src="getImgChange(item.change)" />
+                </p>
+                <p>
+                  {{ base.sign }}
+                  {{ formatNumber(parseFloat(item.price).toFixed(2)) }}
+                </p>
+              </div>
+            </li>
           </router-link>
         </ul>
       </div>
@@ -35,13 +55,13 @@
 </template>
 
 <script>
-import ClickOutside from 'vue-click-outside';
+import ClickOutside from "vue-click-outside";
 
 export default {
-  name: 'Header',
+  name: "Header",
   data() {
     return {
-      search: '',
+      search: "",
       cryptocurrencies: null,
       base: null,
       show: false,
@@ -61,7 +81,9 @@ export default {
   methods: {
     getFromAPI() {
       this.$http
-        .get(`https://api.coinranking.com/v1/public/coins?prefix=${this.search}`)
+        .get(
+          `https://api.coinranking.com/v1/public/coins?prefix=${this.search}`
+        )
         .then((response) => {
           this.cryptocurrencies = response.data.data.coins;
           this.base = response.data.data.base;
@@ -74,9 +96,9 @@ export default {
       this.show = false;
     },
     formatNumber(number) {
-      const numbers = number.toString().split('.');
-      numbers[0] += '';
-      const sep = ' ';
+      const numbers = number.toString().split(".");
+      numbers[0] += "";
+      const sep = " ";
       const reg = /(\d+)(\d{3})/;
       while (reg.test(numbers[0])) {
         numbers[0] = numbers[0].replace(reg, `$1${sep}$2`);
@@ -90,10 +112,10 @@ export default {
     getImgChange(change) {
       if (parseFloat(change) > 0) {
         // eslint-disable-next-line
-        return require('../assets/up.png');
+        return require("../assets/up.png");
       }
       // eslint-disable-next-line
-      return require('../assets/down.png');
+      return require("../assets/down.png");
     },
   },
   directives: {
@@ -104,58 +126,58 @@ export default {
 
 <style lang="css" scoped>
 /* Header */
-header{
-width: 100%;
-min-width: 480px;
-height: 50px;
-background-color: #404040;
-position: fixed;
-z-index: 9999;
-top: 0;
-left: 0;
+header {
+  width: 100%;
+  min-width: 480px;
+  height: 50px;
+  background-color: #404040;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
 }
 
-#header-container-img{
-display: flex;
-float: left;
-height: 100%;
-width: 98px;
+#header-container-img {
+  display: flex;
+  float: left;
+  height: 100%;
+  width: 98px;
 }
 
 #menu-icon {
   display: none;
 }
 
-#logo-header{
-padding-left: 8px;
-margin : auto;
-width: 80%;
-height: 80%;
+#logo-header {
+  padding-left: 8px;
+  margin: auto;
+  width: 80%;
+  height: 80%;
 }
 
-#header-container{
-display: flex;
-justify-content: space-around;
-height: 100%;
+#header-container {
+  display: flex;
+  justify-content: space-around;
+  height: 100%;
 }
 
-.header-div{
-display: flex;
-height: 100%;
-font-family: Bahnschrift, sans-serif;
-font-size: 20px;
-color: #fff;
+.header-div {
+  display: flex;
+  height: 100%;
+  font-family: Bahnschrift, sans-serif;
+  font-size: 20px;
+  color: #fff;
 }
 
-.header-div a{
-text-decoration: none;
-color: #fff;
+.header-div a {
+  text-decoration: none;
+  color: #fff;
 }
 
 .header-div span,
-.header-div a{
-margin: auto;
-cursor: pointer;
+.header-div a {
+  margin: auto;
+  cursor: pointer;
 }
 
 .search-container {
@@ -191,7 +213,7 @@ cursor: pointer;
   list-style-type: none;
   padding: 0;
   margin: 0;
-  box-shadow: 0px 0px 20px 0px rgba(0,0,0,0.75);
+  box-shadow: 0px 0px 20px 0px rgba(0, 0, 0, 0.75);
 }
 
 .search-list li {
@@ -240,21 +262,21 @@ cursor: pointer;
   text-overflow: ellipsis;
 }
 
-@media screen and (max-device-width:480px), screen and (max-width: 900px) {
-  header{
+@media screen and (max-device-width: 480px), screen and (max-width: 900px) {
+  header {
     height: 100px;
     min-width: unset;
   }
 
-  .header-div{
+  .header-div {
     font-size: 4vw;
   }
 
-  .search-list-info{
+  .search-list-info {
     font-size: 13.33px;
   }
 
-  #menu-icon{
+  #menu-icon {
     display: block;
     margin: auto;
     height: 40px;
@@ -262,7 +284,7 @@ cursor: pointer;
     cursor: pointer;
   }
 
-  #logo-header{
+  #logo-header {
     display: none;
   }
 

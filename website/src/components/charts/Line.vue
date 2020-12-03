@@ -1,8 +1,8 @@
 <script>
-import VueChartJs from 'vue-chartjs';
+import VueChartJs from "vue-chartjs";
 
 export default {
-  name: 'LineChart',
+  name: "LineChart",
   extends: VueChartJs.Line,
   props: {
     history: { type: Array, default: null },
@@ -13,17 +13,20 @@ export default {
       Plot the chart, also used to update it
     */
     chart() {
-      this.renderChart({
-        labels: this.getTimestamp(),
-        datasets: [
-          {
-            label: 'Price',
-            backgroundColor: ['rgba(255, 127, 80, 0.4)'],
-            pointBackgroundColor: 'rgba(255, 127, 80, 0.6)',
-            data: this.getPrice(),
-          },
-        ],
-      }, { responsive: true, maintainAspectRatio: false });
+      this.renderChart(
+        {
+          labels: this.getTimestamp(),
+          datasets: [
+            {
+              label: "Price",
+              backgroundColor: ["rgba(255, 127, 80, 0.4)"],
+              pointBackgroundColor: "rgba(255, 127, 80, 0.6)",
+              data: this.getPrice(),
+            },
+          ],
+        },
+        { responsive: true, maintainAspectRatio: false }
+      );
     },
     /*
       getPrice :: () → [Number]
@@ -43,8 +46,10 @@ export default {
     getTimestamp() {
       const timestamp = [];
       for (let i = 0; i < this.history.length; i += 1) {
-        const d = new Date((this.history[i].timestamp));
-        const date = `${d.getYear() + 1900}-${d.getMonth() + 1}-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
+        const d = new Date(this.history[i].timestamp);
+        const date = `${d.getYear() + 1900}-${
+          d.getMonth() + 1
+        }-${d.getDate()} ${d.getHours()}:${d.getMinutes()}:${d.getSeconds()}`;
         timestamp.push(date);
       }
       return timestamp;

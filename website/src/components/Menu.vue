@@ -2,26 +2,26 @@
   <div>
     <div id="option">
       <div id="separate-option">
-          <div
-            v-if="$route.name === 'randomizer'"
-            class="sorting-option"
-            @click="$emit('update', 'new')">
-            <div class="option-possibility">
-              <span class="option-possibility-span">
-                New Random
-              </span>
-            </div>
+        <div
+          v-if="$route.name === 'randomizer'"
+          class="sorting-option"
+          @click="$emit('update', 'new')"
+        >
+          <div class="option-possibility">
+            <span class="option-possibility-span"> New Random </span>
           </div>
-          <div class="option-title">Currency</div>
-          <div class="sorting-option">
-            <sortingoption
-              v-for="(item, index) in currency"
-              :key="index"
-              :currency="item"
-              classColorName="currency"
-              v-on:update="$emit('update', $event)">
-            </sortingoption>
-          </div>
+        </div>
+        <div class="option-title">Currency</div>
+        <div class="sorting-option">
+          <sortingoption
+            v-for="(item, index) in currency"
+            :key="index"
+            :currency="item"
+            classColorName="currency"
+            v-on:update="$emit('update', $event)"
+          >
+          </sortingoption>
+        </div>
         <!-- / Currency option -->
         <div>
           <div class="option-title">Time Period</div>
@@ -31,7 +31,8 @@
               :key="index"
               :currency="item"
               classColorName="timePeriod"
-              v-on:update="$emit('update', $event)">
+              v-on:update="$emit('update', $event)"
+            >
             </sortingoption>
           </div>
         </div>
@@ -44,7 +45,8 @@
               :key="index"
               :currency="item"
               classColorName="sort"
-              v-on:update="$emit('update', $event)">
+              v-on:update="$emit('update', $event)"
+            >
             </sortingoption>
           </div>
         </div>
@@ -57,7 +59,8 @@
               :key="index"
               :currency="item"
               classColorName="order"
-              v-on:update="$emit('update', $event)">
+              v-on:update="$emit('update', $event)"
+            >
             </sortingoption>
           </div>
         </div>
@@ -69,27 +72,27 @@
     <transition name="slide">
       <div v-show="responsive" id="responsive-menu">
         <div id="separate-option">
-            <div
-              v-if="$route.name === 'randomizer'"
-              class="sorting-option"
-              @click="$emit('update', 'new')">
-              <div class="option-possibility">
-                <span class="option-possibility-span">
-                  New Random
-                </span>
-              </div>
+          <div
+            v-if="$route.name === 'randomizer'"
+            class="sorting-option"
+            @click="$emit('update', 'new')"
+          >
+            <div class="option-possibility">
+              <span class="option-possibility-span"> New Random </span>
             </div>
-            <div class="option-title">Currency</div>
-            <div class="sorting-option">
-              <sortingoption
-                v-for="(item, index) in currency"
-                :key="index"
-                :currency="item"
-                classColorName="currency"
-                mobileClass="currency-mobile"
-                v-on:update="$emit('update', $event)">
-              </sortingoption>
-            </div>
+          </div>
+          <div class="option-title">Currency</div>
+          <div class="sorting-option">
+            <sortingoption
+              v-for="(item, index) in currency"
+              :key="index"
+              :currency="item"
+              classColorName="currency"
+              mobileClass="currency-mobile"
+              v-on:update="$emit('update', $event)"
+            >
+            </sortingoption>
+          </div>
           <!-- / Currency option -->
           <div>
             <div class="option-title">Time Period</div>
@@ -100,7 +103,8 @@
                 :currency="item"
                 classColorName="timePeriod"
                 mobileClass="timePeriod-mobile"
-                v-on:update="$emit('update', $event)">
+                v-on:update="$emit('update', $event)"
+              >
               </sortingoption>
             </div>
           </div>
@@ -114,7 +118,8 @@
                 :currency="item"
                 classColorName="sort"
                 mobileClass="sort-mobile"
-                v-on:update="$emit('update', $event)">
+                v-on:update="$emit('update', $event)"
+              >
               </sortingoption>
             </div>
           </div>
@@ -128,7 +133,8 @@
                 :currency="item"
                 classColorName="order"
                 mobileClass="order-mobile"
-                v-on:update="$emit('update', $event)">
+                v-on:update="$emit('update', $event)"
+              >
               </sortingoption>
             </div>
           </div>
@@ -142,7 +148,7 @@
 </template>
 
 <script>
-import sortingoption from '@/components/sortingoption.vue';
+import sortingoption from "@/components/sortingoption.vue";
 
 export default {
   components: { sortingoption },
@@ -186,11 +192,13 @@ export default {
     height: 100%;
   }
 
-  .slide-enter-active, .slide-leave-active {
+  .slide-enter-active,
+  .slide-leave-active {
     transition-duration: 0.4s;
     transition-property: transform;
   }
-  .slide-enter, .slide-leave-to {
+  .slide-enter,
+  .slide-leave-to {
     transform: translate(-200px, 0);
   }
 

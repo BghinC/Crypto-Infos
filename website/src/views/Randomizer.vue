@@ -1,52 +1,57 @@
 <template>
   <div>
-    <Header v-on:menu="manageMenu()"/>
+    <Header v-on:menu="manageMenu()" />
     <div id="main">
       <Menu
         :responsive="showMenu"
         :currency="currency"
         :timeperiod="timeperiod"
-        v-on:update="getFromApiOptions($event)"/>
+        v-on:update="getFromApiOptions($event)"
+      />
       <div id="main-container">
         <crypto-details
-            id="crypto-detail"
-            v-if="history && cryptocurrency.allTimeHigh"
-            :history="history"
-            :cryptocurrency="cryptocurrency"
-            :base="base"
-            :loading="loadingDetails">
-          </crypto-details>
+          id="crypto-detail"
+          v-if="history && cryptocurrency.allTimeHigh"
+          :history="history"
+          :cryptocurrency="cryptocurrency"
+          :base="base"
+          :loading="loadingDetails"
+        >
+        </crypto-details>
       </div>
       <!-- / main-container -->
     </div>
-    <Footer/>
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from '@/components/Header.vue';
-import Menu from '@/components/Menu.vue';
-import CryptoDetails from '@/components/CryptoDetails.vue';
-import Footer from '@/components/Footer.vue';
+import Header from "@/components/Header.vue";
+import Menu from "@/components/Menu.vue";
+import CryptoDetails from "@/components/CryptoDetails.vue";
+import Footer from "@/components/Footer.vue";
 
 export default {
-  name: 'Randomizer',
+  name: "Randomizer",
   components: {
-    Header, Menu, CryptoDetails, Footer,
+    Header,
+    Menu,
+    CryptoDetails,
+    Footer,
   },
   data() {
     return {
       cryptocurrency: {},
 
       /* Default options */
-      sortcurrency: 'USD',
-      sorttimeperiod: '24h',
+      sortcurrency: "USD",
+      sorttimeperiod: "24h",
 
-      url: '',
-      url_history: '',
+      url: "",
+      url_history: "",
 
-      currency: ['USD', 'EUR', 'JPY', 'CZK', 'GBP', 'BTC', 'ETH'],
-      timeperiod: ['24h', '7d', '30d', '1y', '5y'],
+      currency: ["USD", "EUR", "JPY", "CZK", "GBP", "BTC", "ETH"],
+      timeperiod: ["24h", "7d", "30d", "1y", "5y"],
 
       history: [],
       base: {},
@@ -67,7 +72,7 @@ export default {
       Return a random cryptocurrency
     */
     getRandomCoins() {
-      const urlRandom = 'https://api.coinranking.com/v1/public/coins';
+      const urlRandom = "https://api.coinranking.com/v1/public/coins";
       let currency = [];
       return this.$http
         .get(urlRandom)
@@ -90,28 +95,29 @@ export default {
     */
     getFromApi() {
       this.loadingDetails = true;
-      this.getRandomCoins().then(async (data) => {
-        this.url = `https://api.coinranking.com/v1/public/coin/${data}?timePeriod=${this.sorttimeperiod}&base=${this.sortcurrency}&`;
-        this.url_history = `https://api.coinranking.com/v1/public/coin/${data}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
-        await this.$http
-          .get(this.url_history)
-          .then((response) => {
-            this.history = response.data.data.history;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-        await this.$http
-          .get(this.url)
-          .then((response) => {
-            this.cryptocurrency = response.data.data.coin;
-            this.base = response.data.data.base;
-            this.loadingDetails = false;
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      })
+      this.getRandomCoins()
+        .then(async (data) => {
+          this.url = `https://api.coinranking.com/v1/public/coin/${data}?timePeriod=${this.sorttimeperiod}&base=${this.sortcurrency}&`;
+          this.url_history = `https://api.coinranking.com/v1/public/coin/${data}/history/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+          await this.$http
+            .get(this.url_history)
+            .then((response) => {
+              this.history = response.data.data.history;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+          await this.$http
+            .get(this.url)
+            .then((response) => {
+              this.cryptocurrency = response.data.data.coin;
+              this.base = response.data.data.base;
+              this.loadingDetails = false;
+            })
+            .catch((error) => {
+              console.log(error);
+            });
+        })
         .catch((error) => {
           console.log(error);
         });
@@ -122,40 +128,41 @@ export default {
     */
     async getFromApiOptions(id) {
       this.loadingDetails = true;
-      if (id === 'new') {
+      if (id === "new") {
         this.getFromApi();
       } else {
-        this.getRandomCoins().then(() => {
-          if (this.currency.includes(id.toUpperCase())) {
-            this.sortcurrency = id.toUpperCase();
-          } else if (this.timeperiod.includes(id)) {
-            this.sorttimeperiod = id;
-          }
-          const urlSplit = this.url.split('?');
-          const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
-          const urlHistorySplit = this.url_history.split('y');
-          const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
+        this.getRandomCoins()
+          .then(() => {
+            if (this.currency.includes(id.toUpperCase())) {
+              this.sortcurrency = id.toUpperCase();
+            } else if (this.timeperiod.includes(id)) {
+              this.sorttimeperiod = id;
+            }
+            const urlSplit = this.url.split("?");
+            const url = `${urlSplit[0]}?base=${this.sortcurrency}&timePeriod=${this.sorttimeperiod}`;
+            const urlHistorySplit = this.url_history.split("y");
+            const urlHistory = `${urlHistorySplit[0]}y/${this.sorttimeperiod}?base=${this.sortcurrency}`;
 
-          this.$http
-            .get(urlHistory)
-            .then((response) => {
-              this.history = response.data.data.history;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
+            this.$http
+              .get(urlHistory)
+              .then((response) => {
+                this.history = response.data.data.history;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
 
-          this.$http
-            .get(url)
-            .then((response) => {
-              this.cryptocurrency = response.data.data.coin;
-              this.base = response.data.data.base;
-              this.loadingDetails = false;
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        })
+            this.$http
+              .get(url)
+              .then((response) => {
+                this.cryptocurrency = response.data.data.coin;
+                this.base = response.data.data.base;
+                this.loadingDetails = false;
+              })
+              .catch((error) => {
+                console.log(error);
+              });
+          })
           .catch((error) => {
             console.log(error);
           });
@@ -166,18 +173,17 @@ export default {
     },
   },
 };
-
 </script>
 
 <style scoped>
 /*
   Details
 */
-#option{
+#option {
   width: 15%;
 }
 
-#main-container{
+#main-container {
   padding-left: 30px;
   padding-right: 30px;
   font-family: Bahnschrift, sans-serif;
@@ -185,17 +191,17 @@ export default {
   width: 100%;
 }
 
-#other{
+#other {
   font-family: Bahnschrift, sans-serif;
 }
 
-#other-title{
+#other-title {
   margin: auto;
   text-align: center;
   margin-bottom: 10px;
 }
 
-#invalid-id{
+#invalid-id {
   font-family: Bahnschrift, sans-serif;
   padding-top: 60px;
   padding-bottom: 60px;
@@ -204,40 +210,41 @@ export default {
   color: red;
 }
 
-@media screen and (max-device-width:480px), screen and (max-width: 900px) {
-  #main-container{
+@media screen and (max-device-width: 480px), screen and (max-width: 900px) {
+  #main-container {
     padding-left: 5px;
     padding-right: 5px;
     width: unset;
   }
 
-  #option{
+  #option {
     width: 100%;
   }
 
-  .single-information{
+  .single-information {
     width: 30%;
     margin-bottom: 8px;
   }
 
-  #invalid-id{
+  #invalid-id {
     padding-top: 160px;
   }
 
-  #crypto-title{
+  #crypto-title {
     font-size: 5vw;
   }
 
-  #img-crypto{
+  #img-crypto {
     width: 63px;
     height: 63px;
   }
 
-  #description, .single-information{
+  #description,
+  .single-information {
     font-size: 3vw;
   }
 
-  #img-change{
+  #img-change {
     width: 30px;
     height: 30px;
   }
